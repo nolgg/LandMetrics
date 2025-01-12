@@ -1,11 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandMetrics</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 8px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+    }
+  </style>
 </head>
 <body>
-    <p>Hello</p>
+  <h1 style="font-size: medium;text-align: center;font-style: oblique;">WELCOME TO LANDMETRICS</h1>
+  <form id="landForm">
+    <label for="area">Area(Square Wah):</label>
+    <input type="number" id="area" name="area" step="0.01" required>
+
+    <label for="pricePerSquareWah">Price Per Square Wah as calculated by the Department of Lands(bath):</label>
+    <input type="number" id="pricePerSquareWah" name="pricePerRai" step="0.01" required>
+
+    <label for="years">Holding Period:</label>
+    <input type="number" id="years" name="years" required>
+
+    <label for="annualGrowthRate">Land Price Growth Rate (% per year):</label>
+    <input type="number" id="annualGrowthRate" name="annualGrowthRate" step="0.01" required>
+
+    <label for="salePrice">Asking Price:</label>
+    <input type="number" id="salePrice" name="salePrice" step="0.01" required>
+
+    <button type="button" onclick="calculate()">Calculate</button>
+  </form>
+
+  <div id="result" class="result" style="display: none;">
+    <h2>Result</h2>
+    <p id="totalCost"></p>
+    <p id="futureValue"></p>
+    <p id="Financial Result"></p>
+  </div>
+
+  <script>
+    function calculate() {
+      // รับค่าจากผู้ใช้
+      const area = parseFloat(document.getElementById("area").value);
+      const pricePerSquareWah= parseFloat(document.getElementById("pricePerSquareWah").value);
+      const years = parseInt(document.getElementById("years").value);
+      const annualGrowthRate = parseFloat(document.getElementById("annualGrowthRate").value) / 100;
+      const salePrice = parseFloat(document.getElementById("salePrice").value);
+
+      // คำนวณต้นทุนรวม
+      const totalCost = area * pricePerSquareWah;
+
+      // คำนวณมูลค่าในอนาคต (Future Value) โดยใช้สูตรการเติบโต
+      const futureValue = totalCost * Math.pow(1 + annualGrowthRate, years);
+
+      // คำนวณกำไรหรือขาดทุน
+      const FinancialResult = salePrice - totalCost;
+
+      // แสดงผลลัพธ์
+      document.getElementById("totalCost").textContent = `Total cost (ต้นทุนทั้งหมด): ${totalCost.toLocaleString()} บาท`;
+      document.getElementById("futureValue").textContent = `Future Value(มูลค่าในอนาคต,จากอัตราเติบโต ${annualGrowthRate * 100}%): ${futureValue.toLocaleString()} บาท`;
+      document.getElementById("Financial Result").textContent = `FinancialResult(กำไร/ขาดทุน,เมื่อขายที่ราคา ${salePrice.toLocaleString()}): ${FinancialResult.toLocaleString()} บาท`;
+
+      // แสดงส่วนผลลัพธ์
+      document.getElementById("result").style.display = "block";
+    }
+  </script>
 </body>
 </html>
