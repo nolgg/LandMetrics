@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Value</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>คำนวณอัตราเติบโตราคาที่ดิน (CAGR)</h2>
+        <form id="growthForm">
+            <label for="startPrice">ราคาที่ดินเริ่มต้น (บาท):</label>
+            <input type="number" id="startPrice" placeholder="กรอกตัวเลข" required>
+
+            <label for="endPrice">ราคาที่ดินปัจจุบัน (บาท):</label>
+            <input type="number" id="endPrice" placeholder="กรอกตัวเลข" required>
+
+            <label for="years">จำนวนปี:</label>
+            <input type="number" id="years" placeholder="กรอกตัวเลข" required>
+
+            <button type="button" onclick="calculateGrowth()">Calculate</button>
+            <a href="/index.html"><button type="button">Go back</button></a>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateGrowth() {
+            const startPrice = parseFloat(document.getElementById("startPrice").value);
+            const endPrice = parseFloat(document.getElementById("endPrice").value);
+            const years = parseFloat(document.getElementById("years").value);
+
+            if (isNaN(startPrice) || isNaN(endPrice) || isNaN(years) || startPrice <= 0 || years <= 0) {
+                document.getElementById("result").textContent = "กรุณากรอกข้อมูลให้ถูกต้อง";
+                return;
+            }
+
+            // คำนวณ CAGR
+            const cagr = ((endPrice / startPrice) ** (1 / years) - 1) * 100;
+
+            // แสดงผลลัพธ์
+            document.getElementById("result").textContent =
+                `อัตราเติบโตเฉลี่ยต่อปี: ${cagr.toFixed(2)}%`;
+        }
+    </script>
+</body>
+</html>
